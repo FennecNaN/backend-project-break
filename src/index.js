@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 
-app.use('/products', productRoutes);
+app.use('/', productRoutes);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
