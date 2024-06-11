@@ -181,7 +181,7 @@ const showEditProduct = async (req, res) => {
     try {
         const product = await Product.findById(req.params.productId);
         if (!product) return res.status(404).send('Product not found');
-        const html = baseHtml + getNavBar() + `
+        const html = baseHtml + getNavBar(req) + `
         <form action="/dashboard/${product._id}/edit" method="POST">
             <label for="name">Nombre:</label>
             <input type="text" id="name" name="name" value="${product.name}" required>
