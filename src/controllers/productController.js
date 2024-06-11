@@ -1,3 +1,4 @@
+const { request } = require('http');
 const Product = require('../models/Product');
 
 const baseHtml = `
@@ -15,19 +16,28 @@ const baseHtml = `
 `;
 
 
-const getNavBar = () => `
-<nav>
+const getNavBar = (req) => {
+    const navHtml = `<nav>
     <ul>
         <li><a href="/products/">Todos</a></li>
         <li><a href="/products/?category=Camisetas">Camisetas</a></li>
         <li><a href="/products/?category=Pantalones">Pantalones</a></li>
         <li><a href="/products/?category=Zapatos">Zapatos</a></li>
         <li><a href="/products/?category=Accesorios">Accesorios</a></li>
-        <li><a href="/products/dashboard">Panel administrador</a></li>
-        <li><a href="/products/dashboard/new">Nuevo Producto</a></li>
-    </ul>
-</nav>
+        <li><a href="/dashboard">Panel administrador</a></li>
 `;
+
+    let html = '';
+    if (req.path === '/dashboard') {
+        html = navHtml + '<li><a href="/dashboard/new">Nuevo Producto</a></li></ul></nav>';
+    } else {
+        html = navHtml + '</ul></nav>';
+    }
+    return html;
+}
+
+
+
 
 const getProductCards = (products) => {
     let html = '';
@@ -79,10 +89,10 @@ const showProducts = async (req, res) => {
             productCards = getProductCardsAdmin(products);
             html = baseHtml + `
             <h1>Dashboard</h1>
-            ` + getNavBar() + productCards + '</body></html>';
+            ` + getNavBar(req) + productCards + '</body></html>';
         } else {
             productCards = getProductCards(products);
-            html = baseHtml + getNavBar() + productCards + '</body></html>';
+            html = baseHtml + getNavBar(req) + productCards + '</body></html>';
         }
 
         res.send(html);
@@ -96,7 +106,7 @@ const showProductById = async (req, res) => {
         // Aquí verificamos si estamos en la página de dashboard y respondemos en consecuencia
         if (req.path === '/dashboard') {
             // Muestra el panel de administrador
-            const html = baseHtml + getNavBar() + `
+            const html = baseHtml + getNavBar(req) + `
                 <h1>Dashboard</h1>
                 </body></html>`;
             res.send(html);
@@ -104,7 +114,7 @@ const showProductById = async (req, res) => {
             // Si no estamos en la página de dashboard, mostramos el detalle del producto por ID
             const product = await Product.findById(req.params.productId);
             if (!product) return res.status(404).send('Product not found');
-            const html = baseHtml + getNavBar() + `
+            const html = baseHtml + getNavBar(req) + `
                 <div class="product-detail">
                     <img src="${product.image}" alt="${product.name}">
                     <h2>${product.name}</h2>
@@ -124,7 +134,7 @@ const showProductById = async (req, res) => {
 
 
 const showNewProduct = (req, res) => {
-    const html = baseHtml + getNavBar() + `
+    const html = baseHtml + getNavBar(req) + `
     <form action="/dashboard" method="POST">
         <label for="name">Nombre:</label>
         <input type="text" id="name" name="name" required>
