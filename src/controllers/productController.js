@@ -15,28 +15,29 @@ const baseHtml = `
 
 `;
 
+const categories = ['Camisetas', 'Pantalones', 'Zapatos', 'Accesorios'];
 
 const getNavBar = (req) => {
-    const navHtml = `<nav>
-    <ul>
-        <li><a href="/products/">Todos</a></li>
-        <li><a href="/products/?category=Camisetas">Camisetas</a></li>
-        <li><a href="/products/?category=Pantalones">Pantalones</a></li>
-        <li><a href="/products/?category=Zapatos">Zapatos</a></li>
-        <li><a href="/products/?category=Accesorios">Accesorios</a></li>
-        <li><a href="/dashboard">Panel administrador</a></li>
-`;
+    let navHtml = `
+    <nav>
+        <ul>
+            <li><a href="/products/">Todos</a></li>
+    `;
 
-    let html = '';
-    if (req.path === '/dashboard') {
-        html = navHtml + '<li><a href="/dashboard/new">Nuevo Producto</a></li></ul></nav>';
-    } else {
-        html = navHtml + '</ul></nav>';
+    for (const category of categories) {
+        navHtml += `<li><a href="/products/?category=${category}">${category}</a></li>`;
     }
-    return html;
+
+    navHtml += `<li><a href="/dashboard">Panel administrador</a></li>`;
+
+    if (req.path === '/dashboard') {
+        navHtml += '<li><a href="/dashboard/new">Nuevo Producto</a></li>';
+    }
+
+    navHtml += '</ul></nav>';
+
+    return navHtml;
 }
-
-
 
 
 const getProductCards = (products) => {
@@ -76,7 +77,7 @@ const getProductCardsAdmin = (products) => {
 
     return html;
 };
-// Controladores
+
 const showProducts = async (req, res) => {
     try {
         const category = req.query.category;
@@ -103,15 +104,12 @@ const showProducts = async (req, res) => {
 
 const showProductById = async (req, res) => {
     try {
-        // Aquí verificamos si estamos en la página de dashboard y respondemos en consecuencia
         if (req.path === '/dashboard') {
-            // Muestra el panel de administrador
             const html = baseHtml + getNavBar(req) + `
                 <h1>Dashboard</h1>
                 </body></html>`;
             res.send(html);
         } else {
-            // Si no estamos en la página de dashboard, mostramos el detalle del producto por ID
             const product = await Product.findById(req.params.productId);
             if (!product) return res.status(404).send('Product not found');
             const html = baseHtml + getNavBar(req) + `
@@ -135,13 +133,17 @@ const showProductById = async (req, res) => {
 
 const showNewProduct = (req, res) => {
     const html = baseHtml + getNavBar(req) + `
-    <form action="/dashboard" method="POST">
-        <label for="name">Nombre:</label>
-        <input type="text" id="name" name="name" required>
-        <label for="description">Descripción:</label>
-        <textarea id="description" name="description" required></textarea>
+        <form action="/dashboard" method="POST">
+
         <label for="image">Imagen URL:</label>
         <input type="text" id="image" name="image" required>
+
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="description">Descripción:</label>
+        <textarea id="description" name="description" required></textarea>
+
         <label for="category">Categoría:</label>
         <select id="category" name="category" required>
             <option value="Camisetas">Camisetas</option>
@@ -149,6 +151,7 @@ const showNewProduct = (req, res) => {
             <option value="Zapatos">Zapatos</option>
             <option value="Accesorios">Accesorios</option>
         </select>
+
         <label for="size">Talla:</label>
         <select id="size" name="size" required>
             <option value="XS">XS</option>
@@ -157,12 +160,15 @@ const showNewProduct = (req, res) => {
             <option value="L">L</option>
             <option value="XL">XL</option>
         </select>
+
         <label for="price">Precio:</label>
         <input type="number" id="price" name="price" required>
+
         <button type="submit">Crear Producto</button>
     </form>
     </body></html>
     `;
+
     res.send(html);
 };
 
@@ -180,41 +186,66 @@ const createProduct = async (req, res) => {
 const showEditProduct = async (req, res) => {
     try {
         const product = await Product.findById(req.params.productId);
-        if (!product) return res.status(404).send('Product not found');
-        const html = baseHtml + getNavBar(req) + `
-        <form action="/dashboard/${product._id}/edit" method="POST">
-            <label for="name">Nombre:</label>
-            <input type="text" id="name" name="name" value="${product.name}" required>
-            <label for="description">Descripción:</label>
-            <textarea id="description" name="description" required>${product.description}</textarea>
-            <label for="image">Imagen URL:</label>
-            <input type="text" id="image" name="image" value="${product.image}" required>
-            <label for="category">Categoría:</label>
-            <select id="category" name="category" required>
-                <option value="Camisetas" ${product.category === 'Camisetas' ? 'selected' : ''}>Camisetas</option>
-                <option value="Pantalones" ${product.category === 'Pantalones' ? 'selected' : ''}>Pantalones</option>
-                <option value="Zapatos" ${product.category === 'Zapatos' ? 'selected' : ''}>Zapatos</option>
-                <option value="Accesorios" ${product.category === 'Accesorios' ? 'selected' : ''}>Accesorios</option>
-            </select>
-            <label for="size">Talla:</label>
-            <select id="size" name="size" required>
-                <option value="XS" ${product.size === 'XS' ? 'selected' : ''}>XS</option>
-                <option value="S" ${product.size === 'S' ? 'selected' : ''}>S</option>
-                <option value="M" ${product.size === 'M' ? 'selected' : ''}>M</option>
-                <option value="L" ${product.size === 'L' ? 'selected' : ''}>L</option>
-                <option value="XL" ${product.size === 'XL' ? 'selected' : ''}>XL</option>
-            </select>
-            <label for="price">Precio:</label>
-            <input type="number" id="price" name="price" value="${product.price}" required>
-            <button type="submit">Actualizar Producto</button>
-        </form>
-        </body></html>
+
+        if (!product) {
+            return res.status(404).send('Producto no encontrado');
+        } 
+        const sizes = ['XS', 'S', 'M', 'L', 'XL'];
+
+
+        let categoryOptions = '';
+        for (let category of categories) {
+            if (category === product.category) {
+                categoryOptions += `<option value="${category}" selected>${category}</option>`;
+            } else {
+                categoryOptions += `<option value="${category}">${category}</option>`;
+            }
+        }
+
+        let sizeOptions = '';
+        for (const size of sizes) {
+            if (size === product.size) {
+                sizeOptions += `<option value="${size}" selected>${size}</option>`;
+            } else {
+                sizeOptions += `<option value="${size}">${size}</option>`;
+            }
+        }
+
+
+        const html = `
+            ${baseHtml}
+            ${getNavBar(req)}
+            <form action="/dashboard/${product._id}/edit" method="POST">
+
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" name="name" value="${product.name}" required>
+
+                <label for="description">Descripción:</label>
+                <textarea id="description" name="description" required>${product.description}</textarea>
+
+                <label for="image">Imagen URL:</label>
+                <input type="text" id="image" name="image" value="${product.image}" required>
+
+                <label for="category">Categoría:</label>
+                <select id="category" name="category" required> ${categoryOptions} </select>
+
+                <label for="size">Talla:</label>
+                <select id="size" name="size" required>${sizeOptions}</select>
+
+                <label for="price">Precio:</label>
+                <input type="number" id="price" name="price" value="${product.price}" required>
+                <button type="submit">Actualizar Producto</button>
+            </form>
+            </body>
+            </html>
         `;
+
         res.send(html);
     } catch (error) {
         res.status(500).send('Error fetching product');
     }
 };
+
 
 const updateProduct = async (req, res) => {
     try {
@@ -234,6 +265,7 @@ const deleteProduct = async (req, res) => {
         res.status(500).send('Error deleting product');
     }
 };
+
 
 module.exports = {
     showProducts,
