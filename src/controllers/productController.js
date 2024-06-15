@@ -1,4 +1,4 @@
-const { request } = require('http');
+
 const Product = require('../models/Product');
 
 const baseHtml = `
@@ -8,7 +8,7 @@ const baseHtml = `
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./public/styles.css">
+    <link rel="stylesheet" href="/style.css">
     <title>Tienda de Ropa</title>
 </head>
 <body>
@@ -31,7 +31,7 @@ const getNavBar = (req) => {
     navHtml += `<li><a href="/dashboard">Panel administrador</a></li>`;
 
     if (req.path === '/dashboard') {
-        navHtml += '<li><a href="/dashboard/new">Nuevo Producto</a></li>';
+        navHtml += '<li><a href="/dashboard/new">Nuevo Producto</a></li>' + '<li><a href="/auth/logout">Logout</a></li>';
     }
 
     navHtml += '</ul></nav>';
@@ -41,40 +41,40 @@ const getNavBar = (req) => {
 
 
 const getProductCards = (products) => {
-    let html = '';
+    let html = '<div class="product-cards-container">';
     for (let product of products) {
         html += `
         <div class="product-card">
             <img src="${product.image}" alt="${product.name}">
-            <h2>Nombre:${product.name}</h2>
+            <h4>Nombre:${product.name}</h4>
             <p>Descripcion:${product.description}</p>
             <p>Precio:${product.price}€</p>
             <a href="/products/${product._id}">Ver detalle</a>
         </div>
         `;
     }
-
+    html += '</div>';
     return html;
 };
 
 const getProductCardsAdmin = (products) => {
-    let html = '';
+    let html = '<div class="product-cards-container">';
     for (let product of products) {
         html += `
         <div class="product-card">
             <img src="${product.image}" alt="${product.name}">
-            <h2>Nombre: ${product.name}</h2>
+            <h4>Nombre: ${product.name}</h4>
             <p>Descripcion: ${product.description}</p>
             <p>Precio: ${product.price}€</p>
-            <a href="/products/${product._id}">Ver detalle</a>
-            <a href="/dashboard/${product._id}/edit">Editar</a>
-            <form action="/dashboard/${product._id}/delete" method="POST" style="display:inline;">
-                <button type="submit">Eliminar</button>
+            <a href="/products/${product._id}" class="btn btn-detail">Ver detalle</a>
+            <a href="/dashboard/${product._id}/edit" class="btn btn-edit">Editar</a>
+            <form action="/dashboard/${product._id}/delete" method="POST">
+                <button type="submit" class="btn btn-delete">Eliminar</button>
             </form>
         </div>
         `;
     }
-
+    html += '</div>';
     return html;
 };
 

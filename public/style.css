@@ -1,0 +1,289 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Estilos para la barra de navegación */
+nav {
+    background-color: #5A639C;
+    padding: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    margin-bottom: 10px;
+    padding-top: 10px;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+nav ul li a {
+    color: white;
+    padding: 10px 15px;
+}
+
+nav ul li a:hover {
+    background-color: #7776B3;
+    border-radius: 5px;
+}
+
+
+
+/* Estilos para las tarjetas de productos */
+.product-card {
+    flex: 1 1 250px; 
+    max-width: 300px; 
+    margin: 10px;
+    padding: 10px;
+    background-color: #fef6ff;
+    border: 1px solid #cccccc;
+    border-radius: 15px; 
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    word-wrap: break-word; 
+}
+
+.product-card img {
+    width: 100%; 
+    height: auto; 
+    border-radius: 10px; 
+}
+
+.product-card h2 {
+    font-size: 1.2rem; 
+    margin: 10px 0;
+}
+
+.product-card p {
+    font-size: 1rem; 
+    margin: 10px 0;
+}
+
+/* Estilos para los botones */
+.product-card a, .product-card form button {
+    font-size: 0.9rem; 
+    text-decoration: none;
+    text-align: center;
+    padding: 8px 16px;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 5px;
+}
+
+.product-card a:hover, .product-card form button:hover {
+    background-color: #5A639C;
+    color: #fff; 
+}
+
+.btn {
+    color: white;
+}
+
+.btn-detail {
+    background-color: #5A639C;
+}
+
+.btn-detail:hover {
+    background-color: #5A639C;
+}
+
+.btn-edit {
+    background-color: #7776B3;
+}
+
+.btn-edit:hover {
+    background-color: #7776B3;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
+.product-card form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+/* Flexbox para alinear las tarjetas de productos */
+.product-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+/* Estilos para los formularios */
+form {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+form input[type="text"],
+form input[type="number"],
+form textarea,
+form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+form button {
+    padding: 10px 20px;
+    background-color: #5A639C;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #cf3e3e;
+}
+
+/* Estilos para el detalle del producto */
+.product-detail {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+}
+
+.product-detail img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.product-detail h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.product-detail p {
+    margin-bottom: 10px;
+}
+
+/* Estilos para el panel administrativo */
+.dashboard {
+    background-color: #f8f9fa;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.dashboard h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+
+
+
+
+/* Estilos generales para el cuerpo del formulario */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e4cfff;
+    padding: 20px;
+}
+
+/* Estilos para los formularios */
+form {
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Estilos para los botones */
+button {
+    background-color: #5A639C;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #5A639C;
+}
+
+/* Estilos para los campos de entrada */
+input[type=text], input[type=password], select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Estilos para etiquetas de formulario */
+label {
+    margin-top: 10px;
+    display: block;
+    font-weight: bold;
+}

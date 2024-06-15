@@ -27,16 +27,17 @@ Tener instalado Node.js y MongoDB en tu sistema.
     ```
 2. Instala las dependencias:
     ```bash
-    npm install express mongoose dotenv
+    npm install express mongoose dotenv bcryptjs express-session
     ```
 3. Crea un archivo `.env` en la raíz del proyecto y añade las variables de entorno PORT para el puerto y MONGO_URI :
     ```env
     PORT= XXXX
     MONGO_URI = mongodb+srv://<usuario>:<password>@cluster0tucluster.xxxxxx.mongodb.net/
+    SESSION_SECRET= el secreto que vayas a utilizar
     ```
 4. Inicia la aplicación:
     ```bash
-    npm start
+    npm run dev
     ```
 
 La aplicación debería ejecutarse en el puerto indicado `http://localhost:xxxx`.
@@ -63,21 +64,19 @@ La aplicación debería ejecutarse en el puerto indicado `http://localhost:xxxx`
 .
 ├── src
 │   ├── config
-│   │   ├── db.js
-│   │   └── firebase.js (BONUS)
+│   │   └── db.js
 │   ├── controllers
 │   │   ├── productController.js
 │   │   └──authController.js (BONUS)
 │   ├── models
+│   │   ├── User.js
 │   │   └── Product.js
 │   ├── routes
 │   │   └── productRoutes.js
-│   │   └── authRoutes.js (BONUS)
-│   ├── middlewares (BONUS)
+│   │   └── authRoutes.js
+│   ├── middlewares
 │   │   └── authMiddleware.js
 │   └── index.js
-├── test (BONUS)
-│   └── productController.test.js
 ├── public
 │   ├── styles.css
 │   └── images (OPCIONAL)
